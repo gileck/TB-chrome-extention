@@ -1,11 +1,14 @@
-function addQueryParams(key, value) {
+function addQueryParams(...tuples) {
     chrome.tabs.getSelected(null,function({url, id}) {
         const urlObj = new URL(url)
-        urlObj.searchParams.set(key, value)
-        if (key === 'ssrDebug') {
+        tuples.forEach(([key, value]) => urlObj.searchParams.set(key, value))
+        tuples.filter(([key, value]) => value === undefined).forEach(([key]) => urlObj.searchParams.delete(key))
+
+        if (tuples.some(([key, value]) => key === 'ssrDebug' && value === true)) {
             urlObj.href = urlObj.href.replace('https', 'http')
+            urlObj.searchParams.delete('forceThunderbolt')
         }
-        if (key === 'forceThunderbolt') {
+        if (tuples.some(([key, value]) => key === 'forceThunderbolt' && value === true)) {
             urlObj.searchParams.delete('ssrDebug')
         }
         chrome.tabs.update(id, {url: urlObj.href});
@@ -19,13 +22,14 @@ function clearQueryParams() {
         chrome.tabs.update(id, {url: urlObj.href});
     });
 }
+const addOnClick = (id, fn) => document.getElementById(id).addEventListener("click", fn)
 
-document.getElementById("ssrDebug").addEventListener("click", () => addQueryParams('ssrDebug', true));
-document.getElementById("forceThunderbolt").addEventListener("click", () => addQueryParams('forceThunderbolt', true));
-document.getElementById("forceBolt").addEventListener("click", () => addQueryParams('petri_ovr', 'specs.EnableThunderboltRenderer:false'));
-document.getElementById("excludeSSR").addEventListener("click", () => addQueryParams('petri_ovr', 'specs.ExcludeSiteFromSsr:true'));
-
-document.getElementById("clear").addEventListener("click", clearQueryParams);
+addOnClick("ssrDebug" , () => addQueryParams(['ssrDebug', true], ['forceThunderbolt', undefined]));
+addOnClick("forceThunderbolt", () => addQueryParams(['forceThunderbolt', true], ['ssrDebug', undefined]));
+addOnClick("forceBolt", () => addQueryParams(['petri_ovr', 'specs.EnableThunderboltRenderer:false']));
+addOnClick("excludeSSR", () => addQueryParams(['petri_ovr', 'specs.ExcludeSiteFromSsr:true']));
+addOnClick("ThunderboltGA", () => addQueryParams(['forceThunderbolt', true], ['petri_ovr', 'specs.RolloutThunderboltFleet:GA']));
+addOnClick("clear", clearQueryParams);
 
 
 
