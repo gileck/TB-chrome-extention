@@ -1,7 +1,6 @@
-function teamCityLogic(params, sender, sendResponse) {
+function teamCityLogin(params, sender, sendResponse) {
     const clickLoginButton = () => {
         document.querySelectorAll('[name="submitLogin"]')[1].click()
-        sendResponse()
     }
     try {
         clickLoginButton()
@@ -10,8 +9,13 @@ function teamCityLogic(params, sender, sendResponse) {
     }
 }
 
+function jiraLogin() {
+    Array.from(document.querySelectorAll('a')).filter(n => n.innerText === 'Sign in with your Wix mail - Google')[0].click()
+}
+
 const handlers = {
-    teamCityLogic
+    teamCityLogin,
+    jiraLogin
 }
 
 

@@ -10,7 +10,9 @@
   },
   "permissions": [
     "tabs",
-    "activeTab"
+    "activeTab",
+    "history",
+    "clipboardRead"
   ],
   "background": {
     "scripts": [

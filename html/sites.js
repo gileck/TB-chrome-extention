@@ -1,0 +1,4 @@
+sitesConfig = [
+    'wixcode-button',
+    'siteButton'
+]

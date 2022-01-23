@@ -1,16 +1,31 @@
 let prevUrl
 let teamCityUrl
+const teamCityLoginPage = "http://pullrequest-tc.dev.wixpress.com/login.html"
+const teamCityPRUrlPrefix = "http://pullrequest-tc.dev.wixpress.com"
+chrome.tabs.onCreated.addListener(function (tab) {
+    const {pendingUrl} = tab
+    if (pendingUrl.includes(teamCityPRUrlPrefix) && pendingUrl !== teamCityLoginPage) {
+        teamCityUrl = pendingUrl
+    }
+
+})
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     const {url} = tab
-    // console.log({url})
-    if (url.includes('http://tc.dev.wixpress.com/?state=')) {
+    if (url === 'http://tc.dev.wixpress.com') {
         chrome.tabs.update(tabId, {url: teamCityUrl});
     }
-    if (url === "http://tc.dev.wixpress.com/login.html") {
-        if (prevUrl !== 'http://tc.dev.wixpress.com/login.html') {
+    if (url === 'http://pullrequest-tc.dev.wixpress.com/overview') {
+        chrome.tabs.update(tabId, {url: teamCityUrl});
+    }
+
+    // http://pullrequest-tc.dev.wixpress.com/login.html
+    // http://pullrequest-tc.dev.wixpress.com/overview
+
+    if (url === "http://tc.dev.wixpress.com/login.html" || url === teamCityLoginPage) {
+        if (prevUrl !== 'http://tc.dev.wixpress.com/login.html' || prevUrl !== teamCityLoginPage) {
             teamCityUrl = prevUrl
         }
-        chrome.tabs.sendMessage(tabId, {type: 'teamCityLogic'});
+        chrome.tabs.sendMessage(tabId, {type: 'teamCityLogin'});
     }
     const urlObj = new URL(url)
     if (urlObj.searchParams.get('ssrDebug') && urlObj.protocol === 'https:') {
@@ -19,8 +34,8 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     }
     prevUrl = url
 
-    if (url === 'https://jira.wixpress.com/plugins/servlet/samlsso') {
-        Array.from(document.querySelectorAll('a')).filter(n => n.innerText === 'Sign in with your Wix mail - Google')[0].click()
+    if (url.includes('jira.wixpress.com/plugins/servlet/samlsso')) {
+            chrome.tabs.sendMessage(tabId, {type: 'jiraLogin'});
     }
 
 })
