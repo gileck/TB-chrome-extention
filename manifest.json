@@ -8,6 +8,7 @@
     "default_popup": "html/popup.html",
     "default_title":"Chrome extension template"
   },
+  "web_accessible_resources" : ["/js/inject.js"],
   "permissions": [
     "tabs",
     "activeTab",

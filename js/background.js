@@ -4,19 +4,13 @@ const teamCityLoginPage = "http://pullrequest-tc.dev.wixpress.com/login.html"
 const teamCityPRUrlPrefix = "http://pullrequest-tc.dev.wixpress.com"
 chrome.tabs.onCreated.addListener(function (tab) {
     const {pendingUrl} = tab
-    if (pendingUrl.includes(teamCityPRUrlPrefix) && pendingUrl !== teamCityLoginPage) {
+    if (pendingUrl && pendingUrl.includes(teamCityPRUrlPrefix) && pendingUrl !== teamCityLoginPage) {
         teamCityUrl = pendingUrl
     }
 
 })
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     const {url} = tab
-    if (url === 'http://tc.dev.wixpress.com') {
-        chrome.tabs.update(tabId, {url: teamCityUrl});
-    }
-    if (url === 'http://pullrequest-tc.dev.wixpress.com/overview') {
-        chrome.tabs.update(tabId, {url: teamCityUrl});
-    }
 
     // http://pullrequest-tc.dev.wixpress.com/login.html
     // http://pullrequest-tc.dev.wixpress.com/overview
@@ -38,4 +32,8 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
             chrome.tabs.sendMessage(tabId, {type: 'jiraLogin'});
     }
 
+    if (url.includes('performanceTool=true')) {
+        chrome.tabs.sendMessage(tabId, {type: 'openPerformanceTool'});
+    }
 })
+

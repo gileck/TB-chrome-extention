@@ -67,5 +67,10 @@ queryParamConfig = {
         query: {
             "debug": true
         }
+    },
+    "Performance Tool": {
+        query: {
+            "performanceTool": true
+        }
     }
 }
