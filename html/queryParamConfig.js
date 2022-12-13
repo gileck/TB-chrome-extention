@@ -72,5 +72,15 @@ queryParamConfig = {
         query: {
             "performanceTool": true
         }
+    },
+    "disableBiLoggerBatch": {
+        query: {
+            "disableBiLoggerBatch": true
+        }
+    },
+    "forceReport": {
+        query: {
+            "forceReport": true
+        }
     }
 }
