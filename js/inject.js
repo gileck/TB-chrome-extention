@@ -1,3 +1,3 @@
 setTimeout(() => {
     window.openPerformanceTool()
-}, 2000)
+}, 5000)

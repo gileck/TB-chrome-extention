@@ -2,21 +2,12 @@ queryParamConfig = {
     "ssrDebug": {
         query: {
             'ssrDebug': true,
-            'forceThunderbolt': undefined,
-            'suppressbi': true
-        }
-    },
-    "forceThunderbolt": {
-        query: {
-            'forceThunderbolt': true,
-            'ssrDebug': undefined,
             'suppressbi': true
         }
     },
     "forceBolt": {
         query: {
             'petri_ovr': 'specs.EnableThunderboltRenderer:false',
-            'forceThunderbolt': undefined,
             'ssrDebug': undefined
         },
         options: {
@@ -31,13 +22,18 @@ queryParamConfig = {
     "ThunderboltGA": {
         query: {
             'petri_ovr': 'specs.RolloutThunderboltFleet:GA',
-            'forceThunderbolt': true
+            'debug': 'false'
+        }
+    },
+    "ThunderboltCanary": {
+        query: {
+            'petri_ovr': 'specs.RolloutThunderboltFleet:Canary',
+            'debug': 'false'
         }
     },
     "DeployPreview": {
         query: {
             'thunderboltTag': () => '________',
-            'forceThunderbolt': true
         }
     },
     "SuricateTunnelId": {
@@ -81,6 +77,21 @@ queryParamConfig = {
     "forceReport": {
         query: {
             "forceReport": true
+        }
+    },
+    "sampleEvents": {
+        query: {
+            "sampleEvents": true
+        }
+    },
+    "disableSiteAssetsCache": {
+        query: {
+            "disableSiteAssetsCache": true
+        }
+    },
+    "ssrIndicator": {
+        query: {
+            "ssrIndicator": true
         }
     }
 }

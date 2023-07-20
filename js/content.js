@@ -19,8 +19,6 @@ function openPerformanceToolInternal() {
     s.setAttribute('type', 'text/javascript');
     s.setAttribute('src', chrome.extension.getURL('/js/inject.js'));
     th.appendChild(s);
-        
-        
 }
 
 const handlers = {
